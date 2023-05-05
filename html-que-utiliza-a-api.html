@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Formulário de Pesquisa</title>
+  </head>
+  <body>
+    <h1>Formulário de Pesquisa</h1>
+    <form id="form-pesquisa">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required><br>
+
+      <label for="marca">Marca preferida:</label>
+      <input type="text" id="marca" name="marca" required><br>
+
+      <label for="cor">Cor preferida:</label>
+      <input type="text" id="cor" name="cor" required><br>
+
+      <label for="valor">Faixa de valor:</label>
+      <input type="text" id="valor" name="valor" required><br>
+
+      <label for="carro">Carro ideal:</label>
+      <textarea id="carro" name="carro" required></textarea><br>
+
+      <input type="submit" value="Enviar">
+    </form>
+
+    <script>
+      const form = document.getElementById('form-pesquisa');
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        
+        const formData = new FormData(form);
+
+        fetch('http://127.0.0.1:5000/pesquisa', {
+          method: 'POST',
+          body: JSON.stringify(Object.fromEntries(formData)),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.mensagem);
+          form.reset();
+        })
+        .catch(error => console.error(error));
+      });
+    </script>
+  </body>
+</html>
